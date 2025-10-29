@@ -1,0 +1,10 @@
+flask
+h2o
+pandas
+pymongo
+openpyxl
+xlrd
+numpy
+scikit-learn
+flask-cors
+requests

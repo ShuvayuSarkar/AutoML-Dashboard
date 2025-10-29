@@ -1,11 +1,13 @@
 # app.py
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import h2o
 from h2o.estimators import H2ORandomForestEstimator, H2OGradientBoostingEstimator, H2OGeneralizedLinearEstimator
 from h2o.automl import H2OAutoML
 import pandas as pd
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 def get_model_choice(choice):
     models = {

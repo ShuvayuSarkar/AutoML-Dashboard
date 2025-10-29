@@ -1,5 +1,6 @@
 # regression_app.py
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 import h2o
 from h2o.estimators import H2ORandomForestEstimator, H2OGradientBoostingEstimator, H2OGeneralizedLinearEstimator
 from h2o.automl import H2OAutoML
@@ -8,6 +9,7 @@ import gridfs
 from pymongo import MongoClient
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Initialize MongoDB client
 client = MongoClient('mongodb://localhost:27017/')
@@ -101,10 +103,10 @@ def predict():
     model = h2o.load_model(model_path)
     df = load_data(file_path, file_type)
     df.fillna(df.mean(numeric_only=True), inplace=True)
-    for col in df.select_dtypes(include(['object']).columns:
+    for col in df.select_dtypes(include=['object']).columns:
         df[col] = df[col].astype('category').cat.codes
     data = h2o.H2OFrame(df)
     predictions = model.predict(data).as_data_frame()
     h2o.shutdown(prompt=False)
 
-    return jsonify
+    return jsonify(predictions.to_dict(orient="records"))
